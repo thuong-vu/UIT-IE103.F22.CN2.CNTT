@@ -1,0 +1,206 @@
+/* =========================================================
+   JobBoard – global stylesheet
+   ========================================================= */
+
+/* ─── 1. Scroll offset: keeps anchor/focus targets below the fixed navbar ─── */
+html {
+  scroll-padding-top: 70px;   /* navbar ~56 px + comfortable buffer */
+}
+
+/* ─── 2. Layout foundation: fixed-navbar offset + sticky-footer flex column ── */
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background-color: #f5f7fa;
+  color: #212529;
+  padding-top: 60px;          /* push all content below the fixed-top navbar */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;          /* body always fills the full viewport height */
+}
+
+/* ─── 3. Main area grows → footer is always pushed to the bottom ──────────── */
+main {
+  flex: 1 0 auto;             /* grow to fill leftover space; never shrink */
+}
+
+/* =========================================================
+   Navbar
+   ========================================================= */
+.navbar-brand {
+  letter-spacing: 0.5px;
+}
+
+/* =========================================================
+   Cards
+   ========================================================= */
+.card {
+  border: 1px solid rgba(0, 0, 0, .08);
+  border-radius: .625rem;
+}
+
+.job-card {
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.job-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 .5rem 1.25rem rgba(0, 0, 0, .12) !important;
+}
+
+/* =========================================================
+   Company logo helpers
+   ========================================================= */
+.company-logo-sm {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  background: #fff;
+  border: 1px solid #dee2e6;
+}
+
+.company-logo-lg {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  background: #fff;
+  border: 1px solid #dee2e6;
+}
+
+.company-logo-placeholder {
+  width: 36px;
+  height: 36px;
+  background: #e9ecef;
+  color: #6c757d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .9rem;
+}
+
+.company-logo-placeholder-lg {
+  width: 72px;
+  height: 72px;
+  background: #e9ecef;
+  color: #6c757d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  border-radius: .5rem;
+}
+
+/* =========================================================
+   Avatar placeholder
+   ========================================================= */
+.avatar-placeholder {
+  width: 90px;
+  height: 90px;
+  background: #e9ecef;
+  color: #6c757d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+/* =========================================================
+   Text pre-wrap (descriptions)
+   ========================================================= */
+.text-pre-wrap {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* =========================================================
+   Hero banner
+   ========================================================= */
+.hero-banner .input-group {
+  border-radius: .5rem;
+  overflow: hidden;
+  background: #fff;
+}
+.hero-banner .form-control {
+  background: transparent;
+  box-shadow: none;
+}
+.hero-banner .form-control:focus {
+  background: transparent;
+  box-shadow: none;
+}
+
+/* =========================================================
+   Tables
+   ========================================================= */
+.table th {
+  font-weight: 600;
+  font-size: .85rem;
+  text-transform: uppercase;
+  letter-spacing: .3px;
+  color: #6c757d;
+}
+
+/* =========================================================
+   Badges
+   ========================================================= */
+.badge {
+  font-weight: 500;
+}
+
+/* =========================================================
+   Footer
+   ========================================================= */
+footer a:hover {
+  color: #fff !important;
+}
+
+/* =========================================================
+   Pagination
+   ========================================================= */
+.page-link {
+  border-radius: .375rem !important;
+  margin: 0 2px;
+}
+
+/* =========================================================
+   Sticky sidebar offset — scoped to sidebars only.
+   Do NOT apply to .sticky-top globally; that would break
+   the navbar (Bootstrap sticky-top must stay at top: 0).
+   ========================================================= */
+.sticky-sidebar {
+  position: sticky;
+  top: 76px;   /* clears the ~56 px navbar + breathing room */
+}
+
+/* =========================================================
+   Form controls focus ring
+   ========================================================= */
+.form-control:focus,
+.form-select:focus {
+  border-color: #86b7fe;
+  box-shadow: 0 0 0 .2rem rgba(13, 110, 253, .25);
+}
+
+/* =========================================================
+   Alert spacing after navbar
+   ========================================================= */
+.alert {
+  border-radius: .5rem;
+}
+
+/* =========================================================
+   Dashboard stat cards
+   ========================================================= */
+.card .fs-2 {
+  line-height: 1.1;
+}
+
+/* =========================================================
+   Responsive tweaks
+   ========================================================= */
+@media (max-width: 576px) {
+  .hero-banner {
+    padding: 2rem 1.25rem !important;
+  }
+  .hero-banner h1 {
+    font-size: 1.5rem;
+  }
+}
