@@ -182,13 +182,8 @@ require_once __DIR__ . '/../includes/header.php';
 
         <?php
         // Salary range label
-        $salaryLabels = [
-            'below_10M' => 'Under 10M', '10M_15M' => '10M – 15M',
-            '15M_20M'   => '15M – 20M', '20M_30M' => '20M – 30M',
-            '30M_50M'   => '30M – 50M', 'above_50M' => 'Above 50M',
-        ];
-        $sMin = $salaryLabels[$job['salary_min'] ?? ''] ?? null;
-        $sMax = $salaryLabels[$job['salary_max'] ?? ''] ?? null;
+        $sMin = isset($job['salary_min']) && $job['salary_min'] !== '' ? number_format((int)$job['salary_min']) : null;
+        $sMax = isset($job['salary_max']) && $job['salary_max'] !== '' ? number_format((int)$job['salary_max']) : null;
         $cur  = $job['currency'] ?? 'VND';
         $salaryDisplay = '';
         if ($sMin && $sMax && $sMin !== $sMax) $salaryDisplay = "$sMin – $sMax $cur";

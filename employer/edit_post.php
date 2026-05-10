@@ -13,16 +13,6 @@ $categories = [
     'Design', 'Customer Service', 'Engineering', 'Healthcare', 'Education', 'Other',
 ];
 
-$salaryOptions = [
-    ''          => '— Select salary range —',
-    'below_10M' => 'Under 10M',
-    '10M_15M'   => '10M – 15M',
-    '15M_20M'   => '15M – 20M',
-    '20M_30M'   => '20M – 30M',
-    '30M_50M'   => '30M – 50M',
-    'above_50M' => 'Above 50M',
-];
-$salaryOrder   = ['below_10M', '10M_15M', '15M_20M', '20M_30M', '30M_50M', 'above_50M'];
 $recruitTypes  = ['fulltime' => 'Fulltime', 'parttime' => 'Parttime', 'online' => 'Online', 'offline' => 'Offline'];
 
 try {
@@ -50,8 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title        = trim($_POST['title']        ?? '');
     $description  = trim($_POST['description']  ?? '');
     $requirements = trim($_POST['requirements'] ?? '');
-    $salaryMin    = $_POST['salary_min']   ?? '';
-    $salaryMax    = $_POST['salary_max']   ?? '';
+    $salaryMin    = trim($_POST['salary_min'] ?? '');
+    $salaryMax    = trim($_POST['salary_max'] ?? '');
     $currency     = $_POST['currency']     ?? 'VND';
     $endDate      = trim($_POST['end_date']      ?? '');
     $recruitType  = $_POST['recruit_type'] ?? 'fulltime';
@@ -61,12 +51,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($title === '')       $errors[] = 'Job title is required.';
     if ($description === '') $errors[] = 'Job description is required.';
-    if (!array_key_exists($salaryMin, $salaryOptions) || !array_key_exists($salaryMax, $salaryOptions)) {
-        $errors[] = 'Invalid salary range selection.';
-    } elseif ($salaryMin !== '' && $salaryMax !== '') {
-        if (array_search($salaryMax, $salaryOrder) < array_search($salaryMin, $salaryOrder)) {
-            $errors[] = 'Maximum salary must be greater than or equal to minimum salary.';
-        }
+    if ($salaryMin !== '' && (!ctype_digit($salaryMin) || (int)$salaryMin < 0)) {
+        $errors[] = 'Minimum salary must be a non-negative number.';
+    }
+    if ($salaryMax !== '' && (!ctype_digit($salaryMax) || (int)$salaryMax < 0)) {
+        $errors[] = 'Maximum salary must be a non-negative number.';
+    }
+    if ($salaryMin !== '' && $salaryMax !== '' && (int)$salaryMax < (int)$salaryMin) {
+        $errors[] = 'Maximum salary must be greater than or equal to minimum salary.';
     }
     if (!in_array($currency, ['VND', 'USD', 'EUR'], true))    $errors[] = 'Invalid currency.';
     if (!array_key_exists($recruitType, $recruitTypes))        $errors[] = 'Invalid recruit type.';
@@ -83,7 +75,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                  WHERE id = ? AND employer_id = ?'
             )->execute([
                 $title, $description, $requirements,
-                $salaryMin ?: null, $salaryMax ?: null, $currency,
+                $salaryMin !== '' ? (int)$salaryMin : null,
+                $salaryMax !== '' ? (int)$salaryMax : null,
+                $currency,
                 $endDate ?: null, $recruitType,
                 $location, $category, $status,
                 $jobId, $epId,
@@ -182,25 +176,15 @@ require_once __DIR__ . '/../includes/header.php';
           <div class="row g-3 mb-3">
             <div class="col-md-4">
               <label for="salary_min" class="form-label">Minimum Salary</label>
-              <select class="form-select" id="salary_min" name="salary_min">
-                <?php foreach ($salaryOptions as $val => $label): ?>
-                  <option value="<?= $val ?>"
-                    <?= ($post['salary_min'] ?? '') === $val ? 'selected' : '' ?>>
-                    <?= $label ?>
-                  </option>
-                <?php endforeach; ?>
-              </select>
+              <input type="number" class="form-control" id="salary_min" name="salary_min"
+                     min="0" step="1" placeholder="e.g. 10000000"
+                     value="<?= htmlspecialchars($post['salary_min'] ?? '') ?>">
             </div>
             <div class="col-md-4">
               <label for="salary_max" class="form-label">Maximum Salary</label>
-              <select class="form-select" id="salary_max" name="salary_max">
-                <?php foreach ($salaryOptions as $val => $label): ?>
-                  <option value="<?= $val ?>"
-                    <?= ($post['salary_max'] ?? '') === $val ? 'selected' : '' ?>>
-                    <?= $label ?>
-                  </option>
-                <?php endforeach; ?>
-              </select>
+              <input type="number" class="form-control" id="salary_max" name="salary_max"
+                     min="0" step="1" placeholder="e.g. 20000000"
+                     value="<?= htmlspecialchars($post['salary_max'] ?? '') ?>">
             </div>
             <div class="col-md-2">
               <label for="currency" class="form-label">Currency</label>

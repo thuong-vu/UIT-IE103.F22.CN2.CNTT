@@ -153,11 +153,6 @@ require_once __DIR__ . '/includes/header.php';
 <?php else: ?>
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4">
     <?php
-    $salaryLabels = [
-        'below_10M' => 'Under 10M', '10M_15M' => '10M–15M',
-        '15M_20M'   => '15M–20M',  '20M_30M' => '20M–30M',
-        '30M_50M'   => '30M–50M',  'above_50M' => 'Above 50M',
-    ];
     $rtMap = [
         'fulltime'  => ['primary',   'Fulltime'],
         'parttime'  => ['info',      'Parttime'],
@@ -166,8 +161,8 @@ require_once __DIR__ . '/includes/header.php';
     ];
     foreach ($jobs as $job):
         // Build salary range string
-        $sMin = $salaryLabels[$job['salary_min'] ?? ''] ?? null;
-        $sMax = $salaryLabels[$job['salary_max'] ?? ''] ?? null;
+        $sMin = isset($job['salary_min']) && $job['salary_min'] !== '' ? number_format((int)$job['salary_min']) : null;
+        $sMax = isset($job['salary_max']) && $job['salary_max'] !== '' ? number_format((int)$job['salary_max']) : null;
         $cur  = $job['currency'] ?? 'VND';
         if ($sMin && $sMax && $sMin !== $sMax) $salaryStr = "$sMin – $sMax $cur";
         elseif ($sMin)                         $salaryStr = "$sMin $cur";
