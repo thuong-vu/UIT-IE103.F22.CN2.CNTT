@@ -1,20 +1,3 @@
--- ================================================================
--- RECRUITMENT_DB — Complete Database Script
--- ================================================================
--- Thứ tự tạo đúng:
---   1. Tạo database
---   2. Tạo Functions (dùng trong Trigger, phải có trước)
---   3. Tạo Tables theo thứ tự FK:
---      users → employer_profiles → jobseeker_profiles
---      → job_posts → applications → saved_jobs → followed_companies
---   4. Tạo Views
---   5. Tạo Stored Procedures
---   6. Tạo Triggers
---   7. Tạo Events
---   8. Insert data
---   9. Tạo tài khoản MySQL & Phân quyền
--- ================================================================
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
